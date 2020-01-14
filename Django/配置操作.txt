@@ -1,0 +1,74 @@
+1.安装 Django ，利用 pip install django==2.1.15 （这是较老的版本，最新的3.0，但是太新了，很多相关包不支持）
+
+2.安装 pymysql 或 mysqlClient ，mysqlClient 是 Django 默认的数据库驱动，最新版本的 Django 对 pymysql 不支持，只能用 mysqlClient 作为数据库驱动
+
+3.启动 cmd 切至中作目录，执行 django-admin startproject projectName(工程名称) 生成 projectName 文件夹，生成预设文件
+
+4.文件说明
+manage.py : 是Django用于管理本项目的命令行工具，之后进行站点运行、数据库自动生成、静态文件收集等通过该文件完成。即管理工具
+
+projectName/__init__.py 定义python包
+
+projectName/setting.py Django项目配置文件，默认时，定义了本项目引用的Django组件，项目名，配置数据库参数，导入其他python包。
+
+projectName/usrl.py 维护项目的URL路由映射，即定义客户端访问的URL，由哪一个python模块解释并提供反馈。
+
+projectName/wgsi,py 定义WSGI的接口信息，并用于与其他Web服务器集成，一般文件生成后无需修改。 
+
+5.如果使用的是 pymysql 需要在 projectName/__init__.py 中添加：
+	import pymysql
+	pymysql.install_as_MySQLdb()
+
+6.修改 projectName/setting.py 中的 DATABASES：
+	DATABASES = {
+	    'default': {
+	        'ENGINE': 'django.db.backends.mysql',  # 数据库驱动
+	        'NAME': 'electric_eye', # 库名
+	        'USER': 'root',			# 用户名
+	        'PASSWORD': '123456',	# 密码
+	        'HOST': '172.16.2.99',	# IP地址
+	        'PORT':'3306'			# 端口
+	    }
+	}
+连接数据库成功
+
+7.创建 projectName/views.py 文件，在当中写数据库操作及通信交互，具体写法参考项目
+
+8.在 projectName/usrl.py 中添加请求地址：
+	from . import views						# 导入 views 文件
+
+	urlpatterns = [
+	    path('admin/', admin.site.urls), 	# 默认管理地址
+	    path('sql/', views.post), 			# 原地址后添加 /sql/ 就可以访问 views 文件中的 post 函数方法
+	]
+
+9.注释掉 projectName/setting.py 中的 'django.middleware.csrf.CsrfViewMiddleware' ，还不知道为啥，需要查资料
+	MIDDLEWARE = [
+	    'django.middleware.security.SecurityMiddleware',
+	    'django.contrib.sessions.middleware.SessionMiddleware',
+	    'django.middleware.common.CommonMiddleware',
+	    # 'django.middleware.csrf.CsrfViewMiddleware',
+	    'django.contrib.auth.middleware.AuthenticationMiddleware',
+	    'django.contrib.messages.middleware.MessageMiddleware',
+	    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	]
+
+10.cmd 中执行 python manage.py runserver 0.0.0.0:8000 开启服务
+
+11.建立项目应用(可选，用于实现多功能)
+python manage.py startapp appName(应用名)
+ 
+12.应用目录
+admin.py 管理站点吗模块的声明文件，默认空
+
+apps.py 应用信息定义文件，在其中生成了类AppCongfig，该类用于定义应用名等Meta数据。
+
+Migrations包：用于在之后定义引用迁移数据，文件夹目录
+
+Models.py 添加模块层数据类的文件
+
+tests.py 测试代码文件。
+
+views.py 定义URL相应函数
+
+13.可以用 testPost.py 测试连接
