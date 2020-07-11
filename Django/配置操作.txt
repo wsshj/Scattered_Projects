@@ -72,3 +72,68 @@ tests.py 测试代码文件。
 views.py 定义URL相应函数
 
 13.可以用 testPost.py 测试连接
+
+
+设置全部主机都可访问：
+1.打开 settings.py 文件
+
+2.将 ALLOWED_HOSTS 设为 "*"
+
+ALLOWED_HOSTS = ["*"]
+
+
+设置跨域请求：
+1.pip install django-cors-headers 安装库文件
+
+2.打开 settings.py 文件
+
+3.在 INSTALLED_APPS 中加入 corsheaders
+
+INSTALLED_APPS = [
+    ...
+    'corsheaders',
+    ...
+]
+
+4.在 MIDDLEWARE 中加入下列字段，注意先后顺序 corsheaders 一定要在上面
+
+MIDDLEWARE = [  # Or MIDDLEWARE_CLASSES on Django < 1.10
+    ...
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    ...
+]
+
+5.跨域增加忽略
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
+6.添加白名单, 如果 ALLOW_ALL 为 True 则无需添加该字段
+
+CORS_ORIGIN_WHITELIST = ['*']
+
+7.添加允许的请求方法
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+8.添加允许的请求头
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
