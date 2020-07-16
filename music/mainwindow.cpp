@@ -52,7 +52,7 @@ void MainWindow::traverseFolder(QString path)
 
     //获取所选文件类型过滤器
     QStringList filters;
-    filters<<QString("*.flac")<<QString("*.wav")<<QString("*.mp3");
+    filters<<QString("*.flac")<<QString("*.wav")<<QString("*.mp3")<<QString("*.ape");
 
     //定义迭代器并设置过滤器
     QDirIterator dir_iterator(path,
@@ -242,10 +242,27 @@ void MainWindow::dropEvent(QDropEvent *event)
         QString file_name = fileInfo.fileName();
         QString file_extend = fileInfo.suffix();
 
-        if(file_extend == "flac" || file_extend == "wav" || file_extend == "mp3")
+        if(file_extend == "flac" || file_extend == "wav" || file_extend == "mp3" || file_extend == "ape")
         {
 //            ui->listWidget->addItem(file_name);
             playerlist->addMedia(QUrl::fromLocalFile(file_path));
         }
+    }
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    if(ui->listWidget->isVisible())
+    {
+        ui->listWidget->setVisible(false);
+        ui->widget->setGeometry(0,height()-120, width(), 100);
+        ui->pushButton_6->setText("A");
+    }
+    else
+    {
+        ui->listWidget->setVisible(true);
+        ui->listWidget->setGeometry(0,100,width(),height()-120);
+        ui->widget->setGeometry(0,0, width(), 100);
+        ui->pushButton_6->setText("V");
     }
 }
