@@ -12,7 +12,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 void MainWidget::initUI()
 {
-    // 设置主窗体无边框，注意函数名为 setWindowFlags ，不要少写了最好的 s 。
+    // 设置主窗体无边框，注意函数名为 setWindowFlags ，不要少写了最后的 s 。
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     m_nBorderWidth = 5;
