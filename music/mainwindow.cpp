@@ -73,12 +73,23 @@ void MainWindow::traverseFolder(QString path)
 
 QString MainWindow::settime(qint64 playtime)
 {
-    long long h,m,s;
-    playtime /= 1000;  //获得的时间是以毫秒为单位的
-    h = playtime / 3600;
-    m = (playtime-h*3600)/60;
-    s = playtime-h*3600-m*60;
-    return QString("%1:%2:%3").arg(h).arg(m).arg(s);  //把int型转化为string类型后再设置为label的text
+    qint64 hour, minute, second;
+
+    qint64 time = playtime / 1000;  //获得的 playtime 时间是以毫秒为单位的
+
+    hour = time / 3600;
+    minute = (time - hour * 3600) / 60;
+    second = time - hour * 3600 - minute * 60;
+
+    if(minute < 10)
+    {
+        if(second < 10)
+        {
+            return QString("0%1:0%2").arg(minute).arg(second);
+        }
+        return QString("0%1:%2").arg(minute).arg(second);
+    }
+    return QString("%1:%2").arg(minute).arg(second);  //把int型转化为string类型后再设置为label的text
 }
 
 void MainWindow::getduration(qint64 playtime)
